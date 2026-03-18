@@ -1,114 +1,44 @@
-<!DOCTYPE html><html lang="en">
+<!-- ================= index.html ================= --><!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pawzz Support</title>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">  <style>
-    body{margin:0;font-family:Poppins;background:#0b1220;color:#e5e7eb}
-    .container{max-width:900px;margin:auto;padding:16px}
-    .card{background:#121a2b;padding:16px;border-radius:12px;margin-bottom:16px}
-    .btn{padding:10px 14px;border:none;border-radius:8px;background:#22c55e;cursor:pointer}
-    .btn:hover{background:#16a34a}
-    input{padding:10px;border-radius:8px;border:none;width:100%}
-    .item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #333}
-    h2{margin-top:0}
-  </style></head>
-<body>
-<div class="container"><div class="card">
-  <h2>Donate</h2>
-  <p>UPI: <b id="upi">yourupi@id</b></p>
-  <button class="btn" onclick="copyUpi()">Copy UPI</button>
-</div><div class="card">
-  <h2>Submit After Payment</h2>
-  <input id="name" placeholder="Enter your name">
-  <button class="btn" onclick="addDonor()">Submit</button>
-  <p>Entries will be verified before appearing.</p>
-</div><div class="card">
-  <h2>Leaderboard</h2>
-  <div id="list"></div>
-  <p>Total: <span id="total">0</span></p>
-  <p>Amount: ₹<span id="amount">0</span></p>
-</div><div class="card">
-  <h2>Admin Panel</h2>
-  <button class="btn" onclick="approveAll()">Approve All</button>
-  <div id="pending"></div>
-</div></div><script>
-const UPI='yourupi@id';
-const KEY='pawzz_final';
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pawzz Auto Donation</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body><div class="container">
+  <h1>🐾 Pawzz Support</h1>  <div class="card">
+    <h2>Donate</h2>
+    <input id="name" placeholder="Enter your name">
+    <input id="amount" placeholder="Enter amount ₹">
+    <button onclick="payNow()">Pay Now</button>
+  </div>  <div class="card">
+    <h2>Leaderboard</h2>
+    <div id="list"></div>
+  </div>
+</div><script src="script.js"></script></body>
+</html><!-- ================= style.css ================= -->body{ font-family:Arial; background:#0b1220; color:white; text-align:center; } .container{max-width:600px;margin:auto} .card{background:#121a2b;padding:20px;margin:20px;border-radius:10px} input{display:block;width:90%;margin:10px auto;padding:10px} button{padding:10px 20px;background:#22c55e;border:none;border-radius:6px;cursor:pointer}
 
-document.getElementById('upi').innerText=UPI;
+<!-- ================= script.js ================= -->const KEY="pawzz_auto";
 
-function load(){return JSON.parse(localStorage.getItem(KEY))||[]}
-function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+function load(){return JSON.parse(localStorage.getItem(KEY))||[]} function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
 
-function addDonor(){
-  const name=document.getElementById('name').value.trim();
-  if(!name) return;
+function render(){ let data=load();
 
-  const amount=prompt('Enter donation amount ₹');
-  if(!amount||isNaN(amount)) return alert('Invalid');
+data.sort((a,b)=>b.amount-a.amount);
 
-  let data=load();
-  data.push({name,amount:Number(amount),approved:false});
-  save(data);
+let list=document.getElementById("list"); list.innerHTML="";
 
-  alert('Submitted. Will appear after approval');
-  document.getElementById('name').value='';
-  render();
-}
+data.forEach((d,i)=>{ let div=document.createElement("div"); div.innerHTML=${i+1}. ${d.name} - ₹${d.amount}; list.appendChild(div); }); }
 
-function render(){
-  let data=load();
+function payNow(){ const name=document.getElementById("name").value; const amount=document.getElementById("amount").value;
 
-  // approved list
-  let approved=data.filter(d=>d.approved);
-  approved.sort((a,b)=>b.amount-a.amount);
+if(!name||!amount) return alert("Fill details");
 
-  let list=document.getElementById('list');
-  list.innerHTML='';
+var options = { "key": "YOUR_RAZORPAY_KEY", "amount": amount*100, "currency": "INR", "name": "Pawzz", "description": "Donation", "handler": function (response){ // after successful payment let data=load(); data.push({name,amount:Number(amount)}); save(data); render(); alert("Payment successful!"); } };
 
-  approved.forEach((d,i)=>{
-    let div=document.createElement('div');
-    div.className='item';
-    div.innerHTML=`${i+1}. ${d.name} - ₹${d.amount}`;
-    list.appendChild(div);
-  });
-
-  document.getElementById('total').innerText=approved.length;
-  document.getElementById('amount').innerText=approved.reduce((s,d)=>s+d.amount,0);
-
-  // pending
-  let pendingDiv=document.getElementById('pending');
-  pendingDiv.innerHTML='<h3>Pending</h3>';
-
-  data.filter(d=>!d.approved).forEach((d,i)=>{
-    let div=document.createElement('div');
-    div.className='item';
-    div.innerHTML=`${d.name} - ₹${d.amount} <button onclick="approve(${i})">Approve</button>`;
-    pendingDiv.appendChild(div);
-  });
-}
-
-function approve(index){
-  let data=load();
-  let pending=data.filter(d=>!d.approved);
-
-  let item=pending[index];
-  let realIndex=data.findIndex(d=>d===item);
-
-  data[realIndex].approved=true;
-  save(data);
-  render();
-}
-
-function approveAll(){
-  let data=load();
-  data.forEach(d=>d.approved=true);
-  save(data);
-  render();
-}
-
-function copyUpi(){navigator.clipboard.writeText(UPI);alert('Copied')}
+var rzp1 = new Razorpay(options); rzp1.open(); }
 
 render();
-</script></body>
-</html>
+
+/* ================= IMPORTANT ================= THIS IS NOT FULLY SECURE Real verification requires backend (Node/Firebase) This is front-end demo only ============================================= */
