@@ -2,80 +2,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pawzz Foundation • Save Lives</title>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">  <style>
-    :root{--bg:#0b1220;--card:#121a2b;--muted:#94a3b8;--text:#e5e7eb;--accent:#22c55e;--accent-2:#16a34a;--shadow:0 10px 30px rgba(0,0,0,0.4)}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text)}
-    header{background:#111827;padding:12px;text-align:center;font-weight:700}
+  <title>Pawzz Support</title>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">  <style>
+    body{margin:0;font-family:Poppins;background:#0b1220;color:#e5e7eb}
     .container{max-width:900px;margin:auto;padding:16px}
-    .card{background:var(--card);padding:16px;border-radius:12px;margin-bottom:16px}
-    .btn{padding:10px 14px;border:none;border-radius:8px;background:var(--accent);cursor:pointer}
-    .btn:hover{background:var(--accent-2)}
+    .card{background:#121a2b;padding:16px;border-radius:12px;margin-bottom:16px}
+    .btn{padding:10px 14px;border:none;border-radius:8px;background:#22c55e;cursor:pointer}
+    .btn:hover{background:#16a34a}
     input{padding:10px;border-radius:8px;border:none;width:100%}
-    .list{margin-top:10px}
     .item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #333}
+    h2{margin-top:0}
   </style></head>
 <body>
-<header>🐾 Pawzz Support</header>
 <div class="container"><div class="card">
-  <h3>Donate</h3>
-  <p>UPI: <b id="upiId">yourupi@id</b></p>
+  <h2>Donate</h2>
+  <p>UPI: <b id="upi">yourupi@id</b></p>
   <button class="btn" onclick="copyUpi()">Copy UPI</button>
 </div><div class="card">
-  <h3>Add Your Name (After Payment)</h3>
-  <input id="nameInput" placeholder="Enter your name">
+  <h2>Submit After Payment</h2>
+  <input id="name" placeholder="Enter your name">
   <button class="btn" onclick="addDonor()">Submit</button>
-  <div class="list" id="list"></div>
+  <p>Entries will be verified before appearing.</p>
 </div><div class="card">
-  <p>Total Supporters: <span id="total">0</span></p>
-  <p>Total Raised: ₹<span id="amount">0</span></p>
+  <h2>Leaderboard</h2>
+  <div id="list"></div>
+  <p>Total: <span id="total">0</span></p>
+  <p>Amount: ₹<span id="amount">0</span></p>
+</div><div class="card">
+  <h2>Admin Panel</h2>
+  <button class="btn" onclick="approveAll()">Approve All</button>
+  <div id="pending"></div>
 </div></div><script>
 const UPI='yourupi@id';
-const KEY='pawzz_v2';
+const KEY='pawzz_final';
 
-const listEl=document.getElementById('list');
-const totalEl=document.getElementById('total');
-const amountEl=document.getElementById('amount');
-
-document.getElementById('upiId').innerText=UPI;
+document.getElementById('upi').innerText=UPI;
 
 function load(){return JSON.parse(localStorage.getItem(KEY))||[]}
 function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
 
-function render(){
-  const data=load();
-  listEl.innerHTML='';
-
-  data.forEach((d,i)=>{
-    const div=document.createElement('div');
-    div.className='item';
-    div.innerHTML=`<span>${i+1}. ${d.name} - ₹${d.amount}</span><span>#${i+1}</span>`;
-    listEl.appendChild(div);
-  });
-
-  totalEl.innerText=data.length;
-  amountEl.innerText=data.reduce((s,d)=>s+d.amount,0);
-}
-
 function addDonor(){
-  const name=document.getElementById('nameInput').value.trim();
+  const name=document.getElementById('name').value.trim();
   if(!name) return;
 
-  const amount=prompt('Enter donation amount (₹):');
-  if(!amount||isNaN(amount)) return alert('Invalid amount');
+  const amount=prompt('Enter donation amount ₹');
+  if(!amount||isNaN(amount)) return alert('Invalid');
 
   let data=load();
-  data.push({name,amount:Number(amount)});
-
-  // 🔥 SORT BY AMOUNT
-  data.sort((a,b)=>b.amount-a.amount);
-
+  data.push({name,amount:Number(amount),approved:false});
   save(data);
-  document.getElementById('nameInput').value='';
+
+  alert('Submitted. Will appear after approval');
+  document.getElementById('name').value='';
   render();
 }
 
-function copyUpi(){navigator.clipboard.writeText(UPI);alert('UPI copied')}
+function render(){
+  let data=load();
+
+  // approved list
+  let approved=data.filter(d=>d.approved);
+  approved.sort((a,b)=>b.amount-a.amount);
+
+  let list=document.getElementById('list');
+  list.innerHTML='';
+
+  approved.forEach((d,i)=>{
+    let div=document.createElement('div');
+    div.className='item';
+    div.innerHTML=`${i+1}. ${d.name} - ₹${d.amount}`;
+    list.appendChild(div);
+  });
+
+  document.getElementById('total').innerText=approved.length;
+  document.getElementById('amount').innerText=approved.reduce((s,d)=>s+d.amount,0);
+
+  // pending
+  let pendingDiv=document.getElementById('pending');
+  pendingDiv.innerHTML='<h3>Pending</h3>';
+
+  data.filter(d=>!d.approved).forEach((d,i)=>{
+    let div=document.createElement('div');
+    div.className='item';
+    div.innerHTML=`${d.name} - ₹${d.amount} <button onclick="approve(${i})">Approve</button>`;
+    pendingDiv.appendChild(div);
+  });
+}
+
+function approve(index){
+  let data=load();
+  let pending=data.filter(d=>!d.approved);
+
+  let item=pending[index];
+  let realIndex=data.findIndex(d=>d===item);
+
+  data[realIndex].approved=true;
+  save(data);
+  render();
+}
+
+function approveAll(){
+  let data=load();
+  data.forEach(d=>d.approved=true);
+  save(data);
+  render();
+}
+
+function copyUpi(){navigator.clipboard.writeText(UPI);alert('Copied')}
 
 render();
 </script></body>
