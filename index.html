@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pawzz Foundation Support</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+    }
+    header {
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      background: #1e293b;
+    }
+    .container {
+      padding: 20px;
+    }
+    .box {
+      background: #1e293b;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+    }
+    button {
+      padding: 12px 20px;
+      background: #22c55e;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    input {
+      padding: 10px;
+      width: 80%;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+    }
+    .donors {
+      margin-top: 20px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body><header>🐾 Support Injured Animals</header><div class="container">  <div class="box">
+    <h2>Donate & Get Featured</h2>
+    <p>Your support helps save animals. Even ₹50 matters.</p>
+    <button onclick="alert('Send payment via UPI: yourupi@id')">Donate Now</button>
+  </div>  <div class="box">
+    <h3>Add Your Name</h3>
+    <input type="text" id="name" placeholder="Enter your name">
+    <button onclick="addDonor()">Submit</button><div class="donors" id="donorList">
+  <h4>Top Supporters</h4>
+</div>
+
+  </div></div><script>
+  function addDonor() {
+    let name = document.getElementById('name').value;
+    if(name.trim() === "") return;
+
+    let list = document.getElementById('donorList');
+    let p = document.createElement('p');
+    p.textContent = "⭐ " + name;
+    list.appendChild(p);
+
+    document.getElementById('name').value = "";
+  }
+</script></body>
+</html>
