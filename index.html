@@ -2,257 +2,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pawzz Foundation • Save Lives</title>  <!-- Google Font -->  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">  <style>
-    :root{
-      --bg:#0b1220;
-      --card:#121a2b;
-      --muted:#94a3b8;
-      --text:#e5e7eb;
-      --accent:#22c55e;
-      --accent-2:#16a34a;
-      --danger:#ef4444;
-      --shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-
+  <title>Pawzz Foundation • Save Lives</title>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">  <style>
+    :root{--bg:#0b1220;--card:#121a2b;--muted:#94a3b8;--text:#e5e7eb;--accent:#22c55e;--accent-2:#16a34a;--shadow:0 10px 30px rgba(0,0,0,0.4)}
     *{box-sizing:border-box}
-
-    body{
-      margin:0;
-      font-family:'Poppins', sans-serif;
-      background: radial-gradient(1200px 600px at 10% -10%, #1f2937 0%, transparent 60%),
-                  radial-gradient(900px 500px at 110% 10%, #111827 0%, transparent 60%),
-                  var(--bg);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-    }
-
-    header{
-      position:sticky; top:0; z-index:10;
-      backdrop-filter: blur(8px);
-      background: rgba(11,18,32,0.7);
-      border-bottom:1px solid rgba(255,255,255,0.06);
-    }
-
-    .nav{
-      max-width:1000px; margin:auto; padding:14px 18px;
-      display:flex; align-items:center; justify-content:space-between;
-    }
-
-    .brand{font-weight:700; letter-spacing:0.5px}
-    .brand span{color:var(--accent)}
-
-    .container{max-width:1000px; margin:30px auto; padding:0 16px}
-
-    .hero{
-      display:grid; gap:16px; text-align:center; margin-bottom:24px;
-    }
-
-    .hero h1{font-size:28px; margin:0}
-    .hero p{color:var(--muted); margin:0}
-
-    .grid{
-      display:grid; grid-template-columns:1fr; gap:18px;
-    }
-
-    @media(min-width:768px){
-      .grid{grid-template-columns:1.2fr 0.8fr}
-      .hero h1{font-size:34px}
-    }
-
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.04), transparent), var(--card);
-      border:1px solid rgba(255,255,255,0.06);
-      border-radius:16px; padding:18px; box-shadow:var(--shadow);
-    }
-
-    .card h2{margin:0 0 8px 0}
-    .muted{color:var(--muted)}
-
-    .cta{
-      display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:12px;
-    }
-
-    .btn{
-      border:none; border-radius:12px; padding:12px 16px; cursor:pointer;
-      font-weight:600; letter-spacing:0.3px;
-      transition: transform .08s ease, box-shadow .15s ease, background .2s ease;
-      box-shadow:0 6px 18px rgba(34,197,94,0.25);
-    }
-
-    .btn-primary{background:var(--accent); color:#04120a}
-    .btn-primary:hover{background:var(--accent-2); transform:translateY(-1px)}
-    .btn-ghost{background:transparent; color:var(--text); border:1px solid rgba(255,255,255,0.12)}
-
-    .stats{
-      display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;
-    }
-
-    .stat{
-      background:#0e1626; border:1px solid rgba(255,255,255,0.06);
-      border-radius:12px; padding:12px; text-align:center;
-    }
-
-    .stat .num{font-size:20px; font-weight:700}
-    .stat .label{font-size:12px; color:var(--muted)}
-
-    .form{
-      display:flex; gap:10px; margin-top:12px;
-    }
-
-    input{
-      flex:1; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.12);
-      background:#0b1323; color:var(--text); outline:none;
-    }
-
-    input:focus{border-color:var(--accent)}
-
-    .list{
-      margin-top:12px; max-height:260px; overflow:auto;
-      border-top:1px dashed rgba(255,255,255,0.08); padding-top:10px;
-    }
-
-    .item{
-      display:flex; justify-content:space-between; align-items:center;
-      padding:8px 6px; border-bottom:1px solid rgba(255,255,255,0.06);
-      font-size:14px;
-    }
-
-    .badge{font-size:11px; padding:4px 8px; border-radius:999px; background:#0e1626; border:1px solid rgba(255,255,255,0.08)}
-
-    .footer{margin:30px 0 10px; text-align:center; color:var(--muted); font-size:12px}
-
-    .notice{font-size:12px; color:var(--muted); margin-top:6px}
-
-    .qr{
-      width:140px; height:140px; border-radius:12px; background:#0e1626;
-      border:1px dashed rgba(255,255,255,0.15);
-      display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--muted);
-    }
-
-    .row{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+    body{margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text)}
+    header{background:#111827;padding:12px;text-align:center;font-weight:700}
+    .container{max-width:900px;margin:auto;padding:16px}
+    .card{background:var(--card);padding:16px;border-radius:12px;margin-bottom:16px}
+    .btn{padding:10px 14px;border:none;border-radius:8px;background:var(--accent);cursor:pointer}
+    .btn:hover{background:var(--accent-2)}
+    input{padding:10px;border-radius:8px;border:none;width:100%}
+    .list{margin-top:10px}
+    .item{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #333}
   </style></head>
 <body>
-  <header>
-    <div class="nav">
-      <div class="brand">🐾 Pawzz <span>Support</span></div>
-      <div class="badge">Every ₹ matters</div>
-    </div>
-  </header>  <div class="container">
-    <section class="hero">
-      <h1>Help Injured Animals Get Treatment</h1>
-      <p>Even ₹50–₹100 can provide food, medicine, and rescue support. Donate and get featured as a supporter.</p>
-    </section><section class="grid">
-  <!-- LEFT: DONATE -->
-  <div class="card">
-    <h2>Donate Now</h2>
-    <p class="muted">Use UPI or scan QR. After donating, add your name below.</p>
+<header>🐾 Pawzz Support</header>
+<div class="container"><div class="card">
+  <h3>Donate</h3>
+  <p>UPI: <b id="upiId">yourupi@id</b></p>
+  <button class="btn" onclick="copyUpi()">Copy UPI</button>
+</div><div class="card">
+  <h3>Add Your Name (After Payment)</h3>
+  <input id="nameInput" placeholder="Enter your name">
+  <button class="btn" onclick="addDonor()">Submit</button>
+  <div class="list" id="list"></div>
+</div><div class="card">
+  <p>Total Supporters: <span id="total">0</span></p>
+  <p>Total Raised: ₹<span id="amount">0</span></p>
+</div></div><script>
+const UPI='yourupi@id';
+const KEY='pawzz_v2';
 
-    <div class="row">
-      <button class="btn btn-primary" onclick="showUpi()">Pay via UPI</button>
-      <button class="btn btn-ghost" onclick="copyUpi()">Copy UPI ID</button>
-      <div id="upiId" class="badge">yourupi@id</div>
-    </div>
+const listEl=document.getElementById('list');
+const totalEl=document.getElementById('total');
+const amountEl=document.getElementById('amount');
 
-    <div class="row" style="margin-top:12px">
-      <div class="qr">Add your QR here</div>
-      <div>
-        <div class="muted">Tip: Share this link on WhatsApp groups.</div>
-        <div class="notice">After payment, submit your name to get featured.</div>
-      </div>
-    </div>
+document.getElementById('upiId').innerText=UPI;
 
-    <div class="stats">
-      <div class="stat">
-        <div class="num" id="totalDonors">0</div>
-        <div class="label">Supporters</div>
-      </div>
-      <div class="stat">
-        <div class="num">₹<span id="estAmount">0</span></div>
-        <div class="label">Estimated Raised</div>
-      </div>
-    </div>
-  </div>
+function load(){return JSON.parse(localStorage.getItem(KEY))||[]}
+function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
 
-  <!-- RIGHT: ADD NAME + LIST -->
-  <div class="card">
-    <h2>Add Your Name</h2>
-    <div class="form">
-      <input id="nameInput" placeholder="Enter your name" />
-      <button class="btn btn-primary" onclick="addDonor()">Submit</button>
-    </div>
-    <div class="notice">We may verify randomly. Please donate before submitting.</div>
+function render(){
+  const data=load();
+  listEl.innerHTML='';
 
-    <div class="list" id="list"></div>
-  </div>
-</section>
+  data.forEach((d,i)=>{
+    const div=document.createElement('div');
+    div.className='item';
+    div.innerHTML=`<span>${i+1}. ${d.name} - ₹${d.amount}</span><span>#${i+1}</span>`;
+    listEl.appendChild(div);
+  });
 
-<div class="footer">Made with purpose • Save lives 🐾</div>
+  totalEl.innerText=data.length;
+  amountEl.innerText=data.reduce((s,d)=>s+d.amount,0);
+}
 
-  </div>  <script>
-    const UPI = 'yourupi@id'; // TODO: replace
-    const STORAGE_KEY = 'pawzz_donors_v1';
+function addDonor(){
+  const name=document.getElementById('nameInput').value.trim();
+  if(!name) return;
 
-    const listEl = document.getElementById('list');
-    const totalEl = document.getElementById('totalDonors');
-    const amountEl = document.getElementById('estAmount');
-    const upiEl = document.getElementById('upiId');
+  const amount=prompt('Enter donation amount (₹):');
+  if(!amount||isNaN(amount)) return alert('Invalid amount');
 
-    upiEl.textContent = UPI;
+  let data=load();
+  data.push({name,amount:Number(amount)});
 
-    function load(){
-      try{
-        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-      }catch(e){return []}
-    }
+  // 🔥 SORT BY AMOUNT
+  data.sort((a,b)=>b.amount-a.amount);
 
-    function save(data){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    }
+  save(data);
+  document.getElementById('nameInput').value='';
+  render();
+}
 
-    function render(){
-      const data = load();
-      listEl.innerHTML = '';
-      data.slice().reverse().forEach((d, i) => {
-        const div = document.createElement('div');
-        div.className = 'item';
-        div.innerHTML = `<span>⭐ ${escapeHtml(d.name)}</span><span class="badge">#${data.length - i}</span>`;
-        listEl.appendChild(div);
-      });
+function copyUpi(){navigator.clipboard.writeText(UPI);alert('UPI copied')}
 
-      totalEl.textContent = data.length;
-      // assume avg ₹100 for simple estimate
-      amountEl.textContent = data.length * 100;
-    }
-
-    function addDonor(){
-      const input = document.getElementById('nameInput');
-      const name = input.value.trim();
-      if(!name) return;
-
-      const data = load();
-      data.push({name, t: Date.now()});
-      save(data);
-      input.value = '';
-      render();
-    }
-
-    function showUpi(){
-      alert('Send via UPI to: ' + UPI + '\n(Replace UPI in code before sharing)');
-    }
-
-    function copyUpi(){
-      navigator.clipboard.writeText(UPI).then(()=>{
-        alert('UPI ID copied');
-      });
-    }
-
-    function escapeHtml(str){
-      return str.replace(/[&<>"']/g, function(m){
-        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[m];
-      });
-    }
-
-    // init
-    render();
-  </script></body>
+render();
+</script></body>
 </html>
